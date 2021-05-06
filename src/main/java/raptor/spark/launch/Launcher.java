@@ -1,5 +1,6 @@
 package raptor.spark.launch;
 
+import java.io.File;
 import java.io.IOException;
 import org.apache.spark.launcher.SparkAppHandle;
 import org.apache.spark.launcher.SparkLauncher;
@@ -14,6 +15,9 @@ public class Launcher {
 
     logger.info("Spark Home [{}]", args[0]);
 
+    File outputFile = new File("target/output.txt");
+    File errorFile = new File("target/error.txt");
+
     SparkAppHandle handler = new SparkLauncher()
         .setAppName("hello-world")
         .setSparkHome(args[0])
@@ -25,22 +29,25 @@ public class Launcher {
         .setMainClass("raptor.spark.demo.hello.HelloWorld")
         .addAppArgs("I came from Launcher")
         .setDeployMode("cluster")
+        // .redirectOutput(outputFile)
+        .redirectError(errorFile)
+        // .redirectToLog(Launcher.class.getName())
         .startApplication(new SparkAppHandle.Listener() {
           @Override
           public void stateChanged(SparkAppHandle handle) {
-            System.out.println("**********  state  changed  **********");
+            logger.info("**********  state  changed  **********");
           }
 
           @Override
           public void infoChanged(SparkAppHandle handle) {
-            System.out.println("**********  info  changed  **********");
+            logger.info("**********  info  changed  **********");
           }
         });
 
-    while (!"FINISHED".equalsIgnoreCase(handler.getState().toString()) && !"FAILED"
-        .equalsIgnoreCase(handler.getState().toString())) {
-      System.out.println("id    " + handler.getAppId());
-      System.out.println("state " + handler.getState());
+    while (handler.getState() != null && !handler.getState().isFinal()) {
+      if (handler.getState() != null) {
+        logger.info("id: {} , state: {}", handler.getAppId(), handler.getState());
+      }
 
       try {
         Thread.sleep(10000);
@@ -48,6 +55,7 @@ public class Launcher {
         e.printStackTrace();
       }
     }
+
 
   }
 }
