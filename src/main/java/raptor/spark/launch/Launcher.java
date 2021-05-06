@@ -5,24 +5,25 @@ import org.apache.spark.launcher.SparkAppHandle;
 import org.apache.spark.launcher.SparkLauncher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import raptor.spark.demo.hello.HelloWorld;
 
 public class Launcher {
 
-  private static final Logger logger = LoggerFactory.getLogger(HelloWorld.class);
+  private static final Logger logger = LoggerFactory.getLogger(Launcher.class);
 
   public static void main(String[] args) throws IOException {
 
+    logger.info("Spark Home [{}]", args[0]);
+
     SparkAppHandle handler = new SparkLauncher()
         .setAppName("hello-world")
-        .setSparkHome("~/Coding/program/spark-2.4.7-bin-hadoop2.7")
+        .setSparkHome(args[0])
         .setMaster("yarn")
         .setConf("spark.driver.memory", "2g")
         .setConf("spark.executor.memory", "1g")
         .setConf("spark.executor.cores", "3")
-        .setAppResource("./target/spark-app-example-1.0.0.jar")
+        .setAppResource("target/spark-app-demo-1.0.0.jar")
         .setMainClass("raptor.spark.demo.hello.HelloWorld")
-        .addAppArgs("I come from Launcher")
+        .addAppArgs("I came from Launcher")
         .setDeployMode("cluster")
         .startApplication(new SparkAppHandle.Listener() {
           @Override
@@ -47,5 +48,6 @@ public class Launcher {
         e.printStackTrace();
       }
     }
+
   }
 }
