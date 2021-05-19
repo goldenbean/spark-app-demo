@@ -6,19 +6,21 @@ import org.apache.spark.sql.SparkSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HelloWorld {
+public class HelloWorldMain {
 
-  private static final Logger logger = LoggerFactory.getLogger(HelloWorld.class);
+  private static final Logger logger = LoggerFactory.getLogger(HelloWorldMain.class);
 
   public static void main(String[] args) throws InterruptedException {
     logger.info("Starting ");
 
     SparkSession spark = SparkSession
         .builder()
-        //.master("yarn")
-        //.appName("hello-world")
-        //.config("spark.some.config.option", "some-value")
+        .appName("hello-world")
         .getOrCreate();
+
+        //.master("yarn")
+        //.config("spark.some.config.option", "some-value")
+
 
     List<Person> persons = new ArrayList<>();
 

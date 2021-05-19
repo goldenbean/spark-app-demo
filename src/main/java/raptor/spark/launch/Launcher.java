@@ -45,7 +45,7 @@ public class Launcher {
         });
 
     while (handler.getState() != null && !handler.getState().isFinal()) {
-        logger.info("id: {} , state: {}", handler.getAppId(), handler.getState());
+      logger.info("id: {} , state: {}", handler.getAppId(), handler.getState());
 
       try {
         Thread.sleep(10000);

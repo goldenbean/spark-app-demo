@@ -9,8 +9,11 @@
   <version>1.0.0</version>
 
   <properties>
-    <spark.version>2.4.7</spark.version>
-    <scala.binary.version>2.11</scala.binary.version>
+
+
+    <spark.version>3.1.1</spark.version>
+    <scala.binary.version>2.12</scala.binary.version>
+
     <hadoop.version>2.8.5</hadoop.version>
     <slf4j.version>1.7.30</slf4j.version>
     <logback-classic-version>1.2.3</logback-classic-version>
@@ -148,4 +151,13 @@
     </plugins>
   </build>
 
+  <profiles>
+    <profile>
+      <id>spark-2.4</id>
+      <properties>
+        <spark.version>2.4.7</spark.version>
+        <scala.binary.version>2.11</scala.binary.version>
+      </properties>
+    </profile>
+  </profiles>
 </project>
